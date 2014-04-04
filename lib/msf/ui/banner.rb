@@ -47,16 +47,25 @@ module Banner
     # Easter egg (always a cow themed logo): export/set GOCOW=1
     if ENV['GOCOW']
       case rand(3)
-        when 0
-          # branded-longhorn
-          self.readfile Logos[0]
-        when 1
-          # cow-head
-          self.readfile Logos[1]
-        else
-          # cowsay
-          self.readfile Logos[2]
-        end
+      when 0
+        # branded-longhorn
+        self.readfile Logos[0]
+      when 1
+        # cow-head
+        self.readfile Logos[1]
+      else
+        # cowsay
+        self.readfile Logos[2]
+      end
+
+    elsif ENV['MSF_ALLBANNERS']
+      all_banners = []
+      Logos.each { |logo|
+        all_banners << self.readfile(logo)
+        all_banners << ("~"*72)
+      }
+      all_banners.join("\n\n")
+
     else
       self.readfile Logos[rand(Logos.length)]
     end
