@@ -30,11 +30,11 @@ class Metasploit3 < Msf::Post
 
   # Takes the passwords JSON file and prints it nicely
   # Password entries look like this:
-  # {"password"=>"trustno1", "passwordField"=>"passwd", "username"=>"", "usernameField"=>"email",
-  # "httpRealm"=>"", "formSubmitURL"=>"https://ssl.reddit.com", "hostname"=>"http://www.reddit.com"}
-  def decode_passwords(passwords)
+  # {"password"=>"somepassword", "passwordField"=>"passwd", "username"=>"", "usernameField"=>"email",
+  # "httpRealm"=>"", "formSubmitURL"=>"https://ssl.reddit.com", "hostname"=>"http://www.example.com"}
+  def print_json(passwords)
     tbl = Rex::Ui::Text::Table.new(
-      'Header'  => 'Saved Firefox Passowrds',
+      'Header'  => 'Saved Firefox Passwords',
       'Indent'  => 4,
       'Columns' => [ 'Site','Username', 'Password' ]
     )
@@ -66,7 +66,7 @@ class Metasploit3 < Msf::Post
         file = store_loot("firefox.passwords.json", "text/json", rhost, passwords.to_json)
         print_good("Saved #{passwords.length} passwords to #{file}")
         if datastore['VERBOSE']
-          decode_passwords(passwords)
+          print_json(passwords)
         end
       rescue JSON::ParserError => e
         print_warning(results)
