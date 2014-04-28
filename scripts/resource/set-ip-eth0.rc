@@ -1,0 +1,7 @@
+sleep 3
+<ruby>
+lhost = PacketFu::Utils.ifconfig(:eth0)[:ip_saddr]
+run_single("setg SRVHOST #{lhost}")
+run_single("setg LHOST #{lhost}")
+</ruby>
+setg VERBOSE true
