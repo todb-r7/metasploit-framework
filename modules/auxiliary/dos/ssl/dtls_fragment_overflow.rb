@@ -8,20 +8,19 @@ require 'msf/core'
 class Metasploit3 < Msf::Auxiliary
 
   include Msf::Auxiliary::Dos
-#  include Msf::Exploit::Capture
   include Exploit::Remote::Udp
 
   def initialize(info = {})
     super(update_info(info,
-      'Name'		=> 'OpenSSL DTLS Fragment Buffer Overflow DoS',
-      'Description'	=> %q{
+      'Name'        => 'OpenSSL DTLS Fragment Buffer Overflow DoS',
+      'Description' => %q{
           This module performs a Denial of Service Attack against Datagram TLS in
           OpenSSL before 0.9.8za, 1.0.0 before 1.0.0m, and 1.0.1 before 1.0.1h.
           This occurs when a DTLS ClientHello message has multiple fragments and the
           fragment lengths of later fragments are larger than that of the first, a
           buffer overflow occurs, causing a DoS.
       },
-      'Author'	=> [
+      'Author'      => [
             'Jon Hart <jon_hart[at]rapid7.com>', #original code
             ],
       'License'        => MSF_LICENSE,
@@ -33,7 +32,7 @@ class Metasploit3 < Msf::Auxiliary
 
     register_options([
       Opt::RPORT(4433),
-      OptInt.new('VERSION', [true,  "SSl/TLS version", 0xFEFF]),
+      OptInt.new('VERSION', [true,  "SSL/TLS version", 0xFEFF]),
       OptAddress.new('SHOST', [false, 'This option can be used to specify a spoofed source address', nil])
     ], self.class)
 
