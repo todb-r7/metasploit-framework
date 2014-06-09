@@ -21,12 +21,18 @@ class Metasploit3 < Msf::Auxiliary
           buffer overflow occurs, causing a DoS.
       },
       'Author'      => [
-            'Jon Hart <jon_hart[at]rapid7.com>', #original code
+            'Jon Hart <jon_hart[at]rapid7.com>', # metasploit module
+            'Jurl Aedla <asd[at]ut.ee>' # discovery
             ],
       'License'        => MSF_LICENSE,
       'References'     =>
         [
           [ 'CVE', '2014-0195' ],
+          [ 'BID', '67900' ],
+          [ 'OSVDB', '107730' ],
+          [ 'ZDI', '14-173' ],
+          [ 'URL', 'http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/ZDI-14-173-CVE-2014-0195-OpenSSL-DTLS-Fragment-Out-of-Bounds/ba-p/6501002'],
+          [ 'URL', 'http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Once-Bled-Twice-Shy-OpenSSL-CVE-2014-0195/ba-p/6501048']
         ],
       'DisclosureDate' => 'Jun 05 2014'))
 
