@@ -11,6 +11,7 @@ require 'find'
 require 'time'
 
 CHECK_OLD_RUBIES = !!ENV['MSF_CHECK_OLD_RUBIES']
+SUPPRESS_INFO_MESSAGES = !!ENV['MSF_SUPPRESS_INFO_MESSAGES']
 
 if CHECK_OLD_RUBIES
   require 'rvm'
@@ -91,6 +92,7 @@ class Msftidy
   # Display an info message. Info messages do not alter the exit status.
   #
   def info(txt, line=0)
+    return if SUPPRESS_INFO_MESSAGES
     line_msg = (line>0) ? ":#{line}" : ''
     puts "#{@full_filepath}#{line_msg} - [#{'INFO'.cyan}] #{cleanup_text(txt)}"
   end
@@ -113,16 +115,28 @@ class Msftidy
     end
   end
 
+  # Updated this check to see if Nokogiri::XML.parse is being called
+  # specifically. The main reason for this concern is that some versions
+  # of libxml2 are still vulnerable to XXE attacks. REXML is safer (and
+  # slower) since it's pure ruby. Unfortunately, there is no pure Ruby
+  # HTML parser (except Hpricot which is abandonware) -- easy checks
+  # can avoid Nokogiri (most modules use regex anyway), but more complex
+  # checks tends to require Nokogiri for HTML element and value parsing.
   def check_nokogiri
-    msg = "Requiring Nokogiri in modules can be risky, use REXML instead."
+    msg = "Using Nokogiri in modules can be risky, use REXML instead."
     has_nokogiri = false
+    has_nokogiri_xml_parser = false
     @source.each_line do |line|
-      if line =~ /^\s*(require|load)\s+['"]nokogiri['"]/
-        has_nokogiri = true
-        break
+      if has_nokogiri
+        if line =~ /Nokogiri::XML\.parse/ or line =~ /Nokogiri::XML::Reader/
+          has_nokogiri_xml_parser = true
+          break
+        end
+      else
+        has_nokogiri = line_has_require?(line, 'nokogiri')
       end
     end
-    error(msg) if has_nokogiri
+    error(msg) if has_nokogiri_xml_parser
   end
 
   def check_ref_identifiers
@@ -183,6 +197,23 @@ class Msftidy
         end
       end
     end
+  end
+
+  # See if 'require "rubygems"' or equivalent is used, and
+  # warn if so.  Since Ruby 1.9 this has not been necessary and
+  # the framework only suports 1.9+
+  def check_rubygems
+    @source.each_line do |line|
+      if line_has_require?(line, 'rubygems')
+        warn("Explicitly requiring/loading rubygems is not necessary")
+        break
+      end
+    end
+  end
+
+  # Does the given line contain a require/load of the specified library?
+  def line_has_require?(line, lib)
+    line =~ /^\s*(require|load)\s+['"]#{lib}['"]/
   end
 
   def check_snake_case_filename
@@ -302,6 +333,15 @@ class Msftidy
     if File.extname(@name) != '.rb'
       error("Module should be a '.rb' file, or it won't load.")
     end
+  end
+
+  # Explicitly skip this check if we're suppressing info messages
+  # anyway, since it takes a fair amount of time per module to perform.
+  def check_rubocop
+    return true if SUPPRESS_INFO_MESSAGES
+    out = %x{rubocop -n #{@full_filepath}}
+    ret = $?
+    info("Fails to pass Rubocop Ruby style guidelines (run 'rubocop #{@full_filepath}' to see violations)") unless ret.exitstatus == 0
   end
 
   def check_old_rubies
@@ -471,13 +511,16 @@ class Msftidy
         error("Writes to stdout", idx)
       end
 
-      # do not change datastore in code
+      # You should not change datastore in code. For reasons. See
+      # RM#8498 for discussion, starting at comment #16:
+      #
+      # https://dev.metasploit.com/redmine/issues/8498#note-16
       if ln =~ /(?<!\.)datastore\[["'][^"']+["']\]\s*=(?![=~>])/
-        error("datastore is modified in code: #{ln}", idx)
+        info("datastore is modified in code: #{ln}", idx)
       end
 
-      # do not read Set-Cookie header
-      if ln =~ /\[['"]Set-Cookie['"]\]/i
+      # do not read Set-Cookie header (ignore commented lines)
+      if ln =~ /^(?!\s*#).+\[['"]Set-Cookie['"]\]/i
         warn("Do not read Set-Cookie header directly, use res.get_cookies instead: #{ln}", idx)
       end
 
@@ -501,6 +544,24 @@ class Msftidy
       test.each { |item|
         info("Please use vars_get in send_request_cgi: #{item}")
       }
+    end
+  end
+
+  def check_newline_eof
+    if @source !~ /(?:\r\n|\n)\z/m
+      info('Please add a newline at the end of the file')
+    end
+  end
+
+  def check_sock_get
+    if @source =~ /\s+sock\.get(\s*|\(|\d+\s*|\d+\s*,\d+\s*)/m && @source !~ /sock\.get_once/
+      info('Please use sock.get_once instead of sock.get')
+    end
+  end
+
+  def check_udp_sock_get
+    if @source =~ /udp_sock\.get/m && @source !~ /udp_sock\.get\([a-zA-Z0-9]+/
+      info('Please specify a timeout to udp_sock.get')
     end
   end
 
@@ -532,6 +593,7 @@ def run_checks(full_filepath)
   tidy.check_mode
   tidy.check_shebang
   tidy.check_nokogiri
+  tidy.check_rubygems
   tidy.check_ref_identifiers
   tidy.check_old_keywords
   tidy.check_verbose_option
@@ -548,6 +610,10 @@ def run_checks(full_filepath)
   tidy.check_comment_splat
   tidy.check_vuln_codes
   tidy.check_vars_get
+  tidy.check_newline_eof
+  tidy.check_rubocop
+  tidy.check_sock_get
+  tidy.check_udp_sock_get
   return tidy
 end
 
