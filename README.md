@@ -1,4 +1,6 @@
 
+Nonsense change.
+
 Metasploit [![Build Status](https://travis-ci.org/rapid7/metasploit-framework.png)](https://travis-ci.org/rapid7/metasploit-framework) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rapid7/metasploit-framework)
 ==
 The Metasploit Framework is released under a BSD-style license. See
