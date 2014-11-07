@@ -85,6 +85,9 @@ begin
         output.prompting
         line = ::Readline.readline(prompt, true)
         ::Readline::HISTORY.pop if (line and line.empty?)
+      rescue Errno::ENOENT => e
+        elog("Error in Readline, try using -L?")
+        elog("#{e.class} #{e.to_s}")
       ensure
         Thread.current.priority = orig || 0
       end
