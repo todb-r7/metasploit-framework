@@ -1,0 +1,26 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag font_awesome_css, bootstrap_css, bootstrap_theme_css %>
+    <%= stylesheet_link_tag :custom, :relative => true  %>
+    <title>MetaKitty Proof of Concept</title>
+  </head>
+  <body>
+
+  <% [
+    :getting_started,
+    :pro_tips,
+    :writing_modules,
+    :frequently_asked_questions
+  ].each do |panel_class|
+    panel_name = panel_class.to_s.split("_").map {|a| a.capitalize}.join(" ") %>
+  <%= panel "Hello, world, this is '#{panel_name}'", class: panel_class, align: :left %>
+  <% end %>
+  </body>
+</html>
+
