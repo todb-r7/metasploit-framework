@@ -1,0 +1,6 @@
+.versions.conf
+.yardoc/
+config/
+coverage/
+log/
+
