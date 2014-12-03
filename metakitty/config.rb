@@ -10,3 +10,7 @@ activate :deploy do |deploy|
   deploy.method = :git
   deploy.remote = 'upstream'
 end
+
+configure :build do
+  activate :relative_assets
+end
