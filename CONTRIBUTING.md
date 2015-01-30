@@ -93,7 +93,7 @@ already way ahead of the curve, so keep it up!
 [PGP key]:http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x2380F85B8AD4DB8D
 [wiki]:https://github.com/rapid7/metasploit-framework/wiki
 [scripts]: https://github.com/rapid7/metasploit-framework/tree/master/scripts
-[development environment setup]:https://github.com/rapid7/metasploit-framework/wiki/Setting-Up-a-Metasploit-Development-Environment
+[development environment setup]:http://r-7.co/MSF-DEV
 [Common Coding Mistakes]:https://github.com/rapid7/metasploit-framework/wiki/Common-Metasploit-Module-Coding-Mistakes
 [Ruby style guide]:https://github.com/bbatsov/ruby-style-guide
 [Rubocop]:https://rubygems.org/search?query=rubocop
