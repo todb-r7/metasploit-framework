@@ -3,9 +3,7 @@
 Thanks for your interest in making Metasploit -- and therefore, the
 world -- a better place!
 
-Are you about to report a bug? Sorry to hear it.
-
-Here's our [Issue tracker](https://github.com/rapid7/metasploit-framework/issues).
+Are you about to report a bug? Sorry to hear it. Here's our [Issue tracker].
 Please try to be as specific as you can about your problem, include steps
 to reproduce (cut and paste from your console output if it's helpful), and
 what you were expecting to happen.
@@ -13,7 +11,7 @@ what you were expecting to happen.
 Are you about to report a security vulnerability in Metasploit itself?
 How ironic! Please take a look at Rapid7's [Vulnerability
 Disclosure Policy](https://www.rapid7.com/disclosure.jsp), and send
-your report to security@rapid7.com using [our PGP key](http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x2380F85B8AD4DB8D).
+your report to security@rapid7.com using our [PGP key].
 
 Are you about to contribute some new functionality, a bug fix, or a new
 Metasploit module? If so, read on...
@@ -27,8 +25,7 @@ make it into Metasploit's master branch.
 If you care not to follow these rules, your contribution **will** be
 closed (*Road House* style). Sorry!
 
-This is intended to be a **short** list. The
-[wiki](https://github.com/rapid7/metasploit-framework/wiki) is much more
+This is intended to be a **short** list. The [wiki] is much more
 exhaustive and reveals many mysteries. If you read nothing else, take a
 look at the standard [development environment setup
 guide](https://github.com/rapid7/metasploit-framework/wiki/Setting-Up-a-Metasploit-Development-Environment)
@@ -91,4 +88,7 @@ mailing list.
 Also, **thank you** for taking the few moments to read this far! You're
 already way ahead of the curve, so keep it up!
 
+[Issue Tracker]:https://github.com/rapid7/metasploit-framework/issues
+[PGP key]:http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x2380F85B8AD4DB8D
+[wiki]:https://github.com/rapid7/metasploit-framework/wiki
 [scripts]: https://github.com/rapid7/metasploit-framework/tree/master/scripts
