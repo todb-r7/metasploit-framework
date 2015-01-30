@@ -60,6 +60,10 @@ Pull requests [#2940](https://github.com/rapid7/metasploit-framework/pull/2940) 
 * **Do** use the [many module mixin APIs](https://rapid7.github.io/metasploit-framework/api/). Wheel improvements are welcome; wheel reinventions, not so much.
 * **Don't** include more than one module per pull request.
 
+#### Scripts
+
+* **Don't** submit new [scripts]. Scripts are shipped as examples for automating local tasks, and anything "serious" can be done with post modules and local exploits.
+
 #### Library Code
 
 * **Do** write [RSpec](http://rspec.info/) tests - even the smallest change in library land can thoroughly screw things up.
@@ -86,3 +90,5 @@ mailing list.
 
 Also, **thank you** for taking the few moments to read this far! You're
 already way ahead of the curve, so keep it up!
+
+[scripts]: https://github.com/rapid7/metasploit-framework/tree/master/scripts
