@@ -89,7 +89,7 @@ or e-mail us at [metasploit-hackers] mailing list.
 Also, **thank you** for taking the few moments to read this far! You're
 already way ahead of the curve, so keep it up!
 
-[Issue Tracker]:https://github.com/rapid7/metasploit-framework/issues
+[Issue Tracker]:http://r-7.co/MSF-BUGv1
 [PGP key]:http://pgp.mit.edu:11371/pks/lookup?op=vindex&search=0x2380F85B8AD4DB8D
 [wiki]:https://github.com/rapid7/metasploit-framework/wiki
 [scripts]: https://github.com/rapid7/metasploit-framework/tree/master/scripts
