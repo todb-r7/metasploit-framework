@@ -4331,7 +4331,7 @@ warning, so give the user a better understanding of what&#39;s going on.</p>
 
   <span class='comment'># Handle hostless loot
 </span>  <span class='kw'>if</span> <span class='id identifier rubyid_host_ranges'>host_ranges</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='comment'># Wasn&#39;t a host search
-</span>    <span class='id identifier rubyid_hostless_loot'>hostless_loot</span> <span class='op'>=</span> <span class='id identifier rubyid_framework'>framework</span><span class='period'>.</span><span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_loots'>loots</span><span class='period'>.</span><span class='id identifier rubyid_find_all_by_host_id'>find_all_by_host_id</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
+</span>    <span class='id identifier rubyid_hostless_loot'>hostless_loot</span> <span class='op'>=</span> <span class='id identifier rubyid_framework'>framework</span><span class='period'>.</span><span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_loots'>loots</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>host_id:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_hostless_loot'>hostless_loot</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_loot'>loot</span><span class='op'>|</span>
       <span class='id identifier rubyid_row'>row</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
       <span class='id identifier rubyid_row'>row</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -7240,7 +7240,7 @@ datastore from an array of addresses</p>
 </div>
 
     <div id="footer">
-  Generated on Fri Jan 30 18:50:18 2015 by
+  Generated on Sat Jan 31 20:50:47 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
