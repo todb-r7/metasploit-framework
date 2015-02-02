@@ -1038,7 +1038,7 @@ there shouldn&#39;t be any false detections, but no guarantees.</p>
 </span>      <span class='comment'># Msf::DBManager::Import::MetasploitFramework::Zip becomes resolvable as Zip here, so need to use ::Zip so Zip
 </span>      <span class='comment'># is resolved as one from rubyzip gem.
 </span>      <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='op'>::</span><span class='const'>Zip</span><span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='rparen'>)</span>
-    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\xd4\xc3\xb2\xa1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\xa1\xb2\xc3\xd4</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\xd4\xc3\xb2\xa1</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ASCII-8BIT</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\xa1\xb2\xc3\xd4</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_force_encoding'>force_encoding</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>ASCII-8BIT</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
       <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='const'>PacketFu</span><span class='op'>::</span><span class='const'>PcapFile</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='symbol'>:filename</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_filename'>filename</span><span class='rparen'>)</span>
     <span class='kw'>else</span>
       <span class='op'>::</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rb</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span>
@@ -1823,7 +1823,7 @@ ones recognized by metasploit</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb  2 04:53:15 2015 by
+  Generated on Mon Feb  2 10:48:34 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
