@@ -898,7 +898,8 @@
 46
 47
 48
-49</pre>
+49
+50</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 23</span>
@@ -917,6 +918,7 @@
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_server_port'>server_port</span>   <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:server_port</span><span class='rbracket'>]</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_username'>username</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_password'>password</span>      <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_debugging'>debugging</span>     <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:debugging</span><span class='rbracket'>]</span>
 
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span> <span class='op'>=</span> <span class='const'>Rex</span><span class='op'>::</span><span class='const'>Socket</span><span class='op'>::</span><span class='const'>Udp</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span>
     <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PeerHost</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_server_host'>server_host</span><span class='comma'>,</span>
@@ -1435,17 +1437,17 @@
       <pre class="lines">
 
 
-108
 109
 110
 111
 112
 113
 114
-115</pre>
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_allocate_call_id'>allocate_call_id</span>
   <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='lparen'>(</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_src_call_idx'>src_call_idx</span> <span class='op'>+=</span> <span class='int'>1</span> <span class='rparen'>)</span>
@@ -1475,13 +1477,13 @@
       <pre class="lines">
 
 
-55
 56
 57
-58</pre>
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_call'>create_call</span>
   <span class='id identifier rubyid_cid'>cid</span>  <span class='op'>=</span> <span class='id identifier rubyid_allocate_call_id'>allocate_call_id</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -1507,12 +1509,12 @@
       <pre class="lines">
 
 
-199
 200
-201</pre>
+201
+202</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 199</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 200</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_ie'>create_ie</span><span class='lparen'>(</span><span class='id identifier rubyid_ie_type'>ie_type</span><span class='comma'>,</span> <span class='id identifier rubyid_ie_data'>ie_data</span><span class='rparen'>)</span>
   <span class='lbracket'>[</span><span class='id identifier rubyid_ie_type'>ie_type</span><span class='comma'>,</span> <span class='id identifier rubyid_ie_data'>ie_data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CC</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_ie_data'>ie_data</span>
@@ -1537,7 +1539,6 @@
       <pre class="lines">
 
 
-203
 204
 205
 206
@@ -1546,10 +1547,11 @@
 209
 210
 211
-212</pre>
+212
+213</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 203</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_pkt'>create_pkt</span><span class='lparen'>(</span><span class='id identifier rubyid_src_call'>src_call</span><span class='comma'>,</span> <span class='id identifier rubyid_dst_call'>dst_call</span><span class='comma'>,</span> <span class='id identifier rubyid_tstamp'>tstamp</span><span class='comma'>,</span> <span class='id identifier rubyid_out_seq'>out_seq</span><span class='comma'>,</span> <span class='id identifier rubyid_inp_seq'>inp_seq</span><span class='comma'>,</span> <span class='id identifier rubyid_itype'>itype</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='lbracket'>[</span>
@@ -1581,13 +1583,13 @@
       <pre class="lines">
 
 
-117
 118
 119
-120</pre>
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 118</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dprint'>dprint</span><span class='lparen'>(</span><span class='id identifier rubyid_msg'>msg</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>if</span> <span class='kw'>not</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_debugging'>debugging</span>
@@ -1613,7 +1615,6 @@
       <pre class="lines">
 
 
-88
 89
 90
 91
@@ -1631,10 +1632,11 @@
 103
 104
 105
-106</pre>
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_matching_call'>matching_call</span><span class='lparen'>(</span><span class='id identifier rubyid_pkt'>pkt</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_src_call'>src_call</span> <span class='op'>=</span> <span class='id identifier rubyid_pkt'>pkt</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span><span class='int'>2</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_unpack'>unpack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>n</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
@@ -1686,7 +1688,6 @@
       <pre class="lines">
 
 
-64
 65
 66
 67
@@ -1708,10 +1709,11 @@
 83
 84
 85
-86</pre>
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_monitor_socket'>monitor_socket</span>
   <span class='kw'>while</span> <span class='kw'>true</span>
@@ -1756,13 +1758,13 @@
       <pre class="lines">
 
 
-130
 131
 132
-133</pre>
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_ack'>send_ack</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>	<span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_ACK</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1788,16 +1790,16 @@
       <pre class="lines">
 
 
-173
 174
 175
 176
 177
 178
-179</pre>
+179
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 174</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_authrep_chall_response'>send_authrep_chall_response</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_chall'>chall</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>
@@ -1826,16 +1828,16 @@
       <pre class="lines">
 
 
-122
 123
 124
 125
 126
 127
-128</pre>
+128
+129</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 122</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_data'>send_data</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_inc_seq'>inc_seq</span> <span class='op'>=</span> <span class='kw'>true</span> <span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='period'>.</span><span class='id identifier rubyid_sendto'>sendto</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_server_host'>server_host</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_server_port'>server_port</span><span class='comma'>,</span> <span class='int'>0</span><span class='rparen'>)</span>
@@ -1864,13 +1866,13 @@
       <pre class="lines">
 
 
-151
 152
 153
-154</pre>
+154
+155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 151</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_hangup'>send_hangup</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>	<span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_HANGUP</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1896,13 +1898,13 @@
       <pre class="lines">
 
 
-146
 147
 148
-149</pre>
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 146</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 147</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_invalid'>send_invalid</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>	<span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_INVAL</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1928,13 +1930,13 @@
       <pre class="lines">
 
 
-140
 141
 142
-143</pre>
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 141</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_lagrp'>send_lagrp</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_stamp'>stamp</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>	<span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_LAGRP</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1960,7 +1962,6 @@
       <pre class="lines">
 
 
-156
 157
 158
 159
@@ -1975,10 +1976,11 @@
 168
 169
 170
-171</pre>
+171
+172</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 156</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_new'>send_new</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_number'>number</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_NEW</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2016,13 +2018,13 @@
       <pre class="lines">
 
 
-135
 136
 137
-138</pre>
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_pong'>send_pong</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_stamp'>stamp</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>	<span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_PONG</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2048,16 +2050,16 @@
       <pre class="lines">
 
 
-181
 182
 183
 184
 185
 186
-187</pre>
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 182</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_regreq'>send_regreq</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='lbracket'>[</span> <span class='const'>IAX_SUBTYPE_REGREQ</span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_pack'>pack</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>C</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -2086,7 +2088,6 @@
       <pre class="lines">
 
 
-189
 190
 191
 192
@@ -2094,10 +2095,11 @@
 194
 195
 196
-197</pre>
+197
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_regreq_chall_response'>send_regreq_chall_response</span><span class='lparen'>(</span><span class='id identifier rubyid_call'>call</span><span class='comma'>,</span> <span class='id identifier rubyid_chall'>chall</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span>
@@ -2128,12 +2130,12 @@
       <pre class="lines">
 
 
-51
 52
-53</pre>
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/rex/proto/iax2/client.rb', line 52</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_shutdown'>shutdown</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_monitor'>monitor</span><span class='period'>.</span><span class='id identifier rubyid_kill'>kill</span> <span class='kw'>rescue</span> <span class='kw'>nil</span>
@@ -2148,7 +2150,7 @@
 </div>
 
     <div id="footer">
-  Generated on Mon Feb  2 16:49:29 2015 by
+  Generated on Mon Feb  2 20:49:33 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
