@@ -935,7 +935,7 @@ VulnDetail fields</p>
         <span class='id identifier rubyid_sname'>sname</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:proto</span><span class='rbracket'>]</span>
       <span class='kw'>end</span>
 
-      <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_host'>host</span><span class='period'>.</span><span class='id identifier rubyid_services'>services</span><span class='period'>.</span><span class='id identifier rubyid_find_or_create_by_port_and_proto'>find_or_create_by_port_and_proto</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span> <span class='id identifier rubyid_proto'>proto</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_host'>host</span><span class='period'>.</span><span class='id identifier rubyid_services'>services</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>port:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:port</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span> <span class='label'>proto:</span> <span class='id identifier rubyid_proto'>proto</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first_or_create'>first_or_create</span>
     <span class='kw'>end</span>
 
     <span class='comment'># Try to find an existing vulnerability with the same service &amp; references
@@ -1060,7 +1060,7 @@ VulnDetail fields</p>
 </div>
 
     <div id="footer">
-  Generated on Thu Feb  5 21:45:19 2015 by
+  Generated on Fri Feb  6 14:49:54 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
