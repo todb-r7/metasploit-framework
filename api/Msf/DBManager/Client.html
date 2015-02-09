@@ -351,7 +351,7 @@ object</p>
   <span class='id identifier rubyid_ret'>ret</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
 
   <span class='id identifier rubyid_host'>host</span> <span class='op'>=</span> <span class='id identifier rubyid_get_host'>get_host</span><span class='lparen'>(</span><span class='symbol'>:workspace</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_wspace'>wspace</span><span class='comma'>,</span> <span class='symbol'>:host</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_addr'>addr</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='id identifier rubyid_host'>host</span><span class='period'>.</span><span class='id identifier rubyid_clients'>clients</span><span class='period'>.</span><span class='id identifier rubyid_find_or_initialize_by_ua_string'>find_or_initialize_by_ua_string</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:ua_string</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_client'>client</span> <span class='op'>=</span> <span class='id identifier rubyid_host'>host</span><span class='period'>.</span><span class='id identifier rubyid_clients'>clients</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>ua_string:</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:ua_string</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first_or_initialize'>first_or_initialize</span>
 
   <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:ua_string</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:ua_string</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
 
@@ -388,7 +388,7 @@ object</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb  9 10:48:29 2015 by
+  Generated on Mon Feb  9 15:00:21 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
