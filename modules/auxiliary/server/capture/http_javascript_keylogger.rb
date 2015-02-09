@@ -63,11 +63,11 @@ class Metasploit3 < Msf::Auxiliary
       cid = generate_client_id(cli,request)
       print_status("Assigning client identifier '#{cid}'")
 
-      resp = create_response(302, 'Moved')
-      resp['Content-Type'] = 'text/html'
-      resp['Location']     = request.uri + '?id=' + cid
-      resp['Set-Cookie']   = "id=#{cid}"
-      cli.send_response(resp)
+      res = create_response(302, 'Moved')
+      res['Content-Type'] = 'text/html'
+      res['Location']     = request.uri + '?id=' + cid
+      res['Set-Cookie']   = "id=#{cid}"
+      cli.send_response(res)
       return
     end
 

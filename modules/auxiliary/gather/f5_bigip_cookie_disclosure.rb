@@ -63,7 +63,8 @@ class Metasploit3 < Msf::Auxiliary
     back_end
   end
 
-  def get_cookie # request a page and extract a F5 looking cookie.
+  # request a page and extract a F5 looking cookie.
+  def get_cookie
     cookie = {}
     res = send_request_raw({
       'method' => 'GET',
