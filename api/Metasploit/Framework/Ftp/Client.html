@@ -542,12 +542,12 @@ connect or connect_login.</p>
       <pre class="lines">
 
 
-271
-272
-273</pre>
+275
+276
+277</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 271</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 275</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_banner'>banner</span>
   <span class='ivar'>@banner</span>
@@ -586,12 +586,12 @@ connect or connect_login.</p>
       <pre class="lines">
 
 
-271
-272
-273</pre>
+275
+276
+277</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 271</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 275</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_datasocket'>datasocket</span>
   <span class='ivar'>@datasocket</span>
@@ -694,10 +694,6 @@ been supplied in the exploit options.</p>
       <pre class="lines">
 
 
-64
-65
-66
-67
 68
 69
 70
@@ -715,10 +711,14 @@ been supplied in the exploit options.</p>
 82
 83
 84
-85</pre>
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 68</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_connect_login'>connect_login</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span><span class='id identifier rubyid_pass'>pass</span><span class='comma'>,</span><span class='id identifier rubyid_global'>global</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_ftpsock'>ftpsock</span> <span class='op'>=</span> <span class='id identifier rubyid_connect'>connect</span><span class='lparen'>(</span><span class='id identifier rubyid_global'>global</span><span class='rparen'>)</span>
@@ -793,7 +793,11 @@ been supplied in the exploit options.</p>
 47
 48
 49
-50</pre>
+50
+51
+52
+53
+54</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 30</span>
@@ -815,7 +819,11 @@ been supplied in the exploit options.</p>
     <span class='comment'># convert port to FTP syntax
 </span>    <span class='id identifier rubyid_datahost'>datahost</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='backref'>$1</span><span class='embexpr_end'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='backref'>$2</span><span class='embexpr_end'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='backref'>$3</span><span class='embexpr_end'>}</span><span class='tstring_content'>.</span><span class='embexpr_beg'>#{</span><span class='backref'>$4</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
     <span class='id identifier rubyid_dataport'>dataport</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='backref'>$5</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>*</span> <span class='int'>256</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='backref'>$6</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
-    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_datasocket'>datasocket</span> <span class='op'>=</span> <span class='const'>Rex</span><span class='op'>::</span><span class='const'>Socket</span><span class='op'>::</span><span class='const'>Tcp</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PeerHost</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_datahost'>datahost</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PeerPort</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_dataport'>dataport</span><span class='rparen'>)</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_datasocket'>datasocket</span> <span class='op'>=</span> <span class='const'>Rex</span><span class='op'>::</span><span class='const'>Socket</span><span class='op'>::</span><span class='const'>Tcp</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span>
+      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PeerHost</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_datahost'>datahost</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PeerPort</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_dataport'>dataport</span><span class='comma'>,</span>
+      <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Context</span><span class='tstring_end'>&#39;</span></span>  <span class='op'>=&gt;</span> <span class='lbrace'>{</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Msf</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_framework'>framework</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>MsfExploit</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_framework_module'>framework_module</span> <span class='rbrace'>}</span>
+    <span class='rparen'>)</span>
   <span class='kw'>end</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_datasocket'>datasocket</span>
 <span class='kw'>end</span></pre>
@@ -850,13 +858,13 @@ been supplied in the exploit options.</p>
       <pre class="lines">
 
 
-55
-56
-57
-58</pre>
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_data_disconnect'>data_disconnect</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_datasocket'>datasocket</span><span class='period'>.</span><span class='id identifier rubyid_shutdown'>shutdown</span>
@@ -904,12 +912,12 @@ been supplied in the exploit options.</p>
       <pre class="lines">
 
 
-259
-260
-261</pre>
+263
+264
+265</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 259</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 263</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ftp_timeout'>ftp_timeout</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>NotImplementedError</span>
@@ -945,12 +953,12 @@ been supplied in the exploit options.</p>
       <pre class="lines">
 
 
-255
-256
-257</pre>
+259
+260
+261</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 255</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 259</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw_send'>raw_send</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_nsock'>nsock</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='rparen'>)</span>
@@ -987,13 +995,13 @@ received, it is returned to the caller.</p>
       <pre class="lines">
 
 
-193
-194
-195
-196</pre>
+197
+198
+199
+200</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 193</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 197</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw_send_recv'>raw_send_recv</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_nsock'>nsock</span><span class='period'>.</span><span class='id identifier rubyid_put'>put</span><span class='lparen'>(</span><span class='id identifier rubyid_cmd'>cmd</span><span class='rparen'>)</span>
@@ -1030,10 +1038,6 @@ received, it is returned to the caller.</p>
       <pre class="lines">
 
 
-201
-202
-203
-204
 205
 206
 207
@@ -1079,10 +1083,14 @@ received, it is returned to the caller.</p>
 247
 248
 249
-250</pre>
+250
+251
+252
+253
+254</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 201</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 205</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_recv_ftp_resp'>recv_ftp_resp</span><span class='lparen'>(</span><span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_found_end'>found_end</span> <span class='op'>=</span> <span class='kw'>false</span>
@@ -1165,17 +1173,17 @@ received, it is returned to the caller.</p>
       <pre class="lines">
 
 
-116
-117
-118
-119
 120
 121
 122
-123</pre>
+123
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_cmd'>send_cmd</span><span class='lparen'>(</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_recv'>recv</span> <span class='op'>=</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cmd'>cmd</span> <span class='op'>=</span> <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\r\n</span><span class='tstring_end'>&quot;</span></span>
@@ -1224,10 +1232,6 @@ returned.</p>
       <pre class="lines">
 
 
-134
-135
-136
-137
 138
 139
 140
@@ -1277,10 +1281,14 @@ returned.</p>
 184
 185
 186
-187</pre>
+187
+188
+189
+190
+191</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 138</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_cmd_data'>send_cmd_data</span><span class='lparen'>(</span><span class='id identifier rubyid_args'>args</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>a</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_type'>type</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -1368,13 +1376,13 @@ using the FTP &#39;PASS &lt;pass&gt;&#39; command.</p>
       <pre class="lines">
 
 
-100
-101
-102
-103</pre>
+104
+105
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 104</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_pass'>send_pass</span><span class='lparen'>(</span><span class='id identifier rubyid_pass'>pass</span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raw_send'>raw_send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>PASS </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_pass'>pass</span><span class='embexpr_end'>}</span><span class='tstring_content'>\r\n</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span><span class='rparen'>)</span>
@@ -1411,13 +1419,13 @@ using the FTP &#39;PASS &lt;pass&gt;&#39; command.</p>
       <pre class="lines">
 
 
-108
-109
-110
-111</pre>
+112
+113
+114
+115</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 112</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_quit'>send_quit</span><span class='lparen'>(</span><span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raw_send'>raw_send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>QUIT\r\n</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span><span class='rparen'>)</span>
@@ -1455,13 +1463,13 @@ using the FTP &#39;PASS &lt;pass&gt;&#39; command.</p>
       <pre class="lines">
 
 
-91
-92
-93
-94</pre>
+95
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/metasploit/framework/ftp/client.rb', line 95</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_user'>send_user</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sock'>sock</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raw_send'>raw_send</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>USER </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_user'>user</span><span class='embexpr_end'>}</span><span class='tstring_content'>\r\n</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_nsock'>nsock</span><span class='rparen'>)</span>
@@ -1477,7 +1485,7 @@ using the FTP &#39;PASS &lt;pass&gt;&#39; command.</p>
 </div>
 
     <div id="footer">
-  Generated on Mon Feb  9 15:01:28 2015 by
+  Generated on Mon Feb  9 16:49:51 2015 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.4 (ruby-2.1.5).
 </div>
