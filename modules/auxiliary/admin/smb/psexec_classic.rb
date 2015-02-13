@@ -18,37 +18,35 @@ class Metasploit3 < Msf::Auxiliary
 
   def initialize(info = {})
     super(update_info(info,
-                      'Name'           => 'PsExec Classic',
-                      'Description'    => %q{
-This module mimics the classic PsExec tool from Microsoft SysInternals.
- Anti-virus software has recently rendered the commonly-used
-exploit/windows/smb/psexec module much less useful because the uploaded
-executable stub is usually detected and deleted before it can be used.  This
-module sends the same code to the target as the authentic PsExec (which
-happens to have a digital signature from Microsoft), thus anti-virus software
-cannot distinguish the difference.  AV cannot block it without also blocking
-the authentic version.  Of course, this module also supports pass-the-hash,
-which the authentic PsExec does not.  You must provide a local path to the
-authentic PsExec.exe (via the PSEXEC_PATH option) so that the PSEXESVC.EXE
-service code can be extracted and uploaded to the target.  The specified
-command (via the COMMAND option) will be executed with SYSTEM privileges.
-                        },
-                      'Author'         =>
-                      [
-                       'Joe Testa <jtesta[at]positronsecurity.com>'
-                      ],
-                      'License'        => MSF_LICENSE,
-                      'References'     =>
-                      [
-                       [ 'URL', 'http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx' ]
-                      ],
-                      'Platform'       => 'win',
-    ))
+      'Name'           => 'PsExec Classic',
+      'Description'    => %q{
+        This module mimics the classic PsExec tool from Microsoft SysInternals.
+        Anti-virus software has recently rendered the commonly-used
+        exploit/windows/smb/psexec module much less useful because the uploaded
+        executable stub is usually detected and deleted before it can be used.  This
+        module sends the same code to the target as the authentic PsExec (which
+        happens to have a digital signature from Microsoft), thus anti-virus software
+        cannot distinguish the difference.  AV cannot block it without also blocking
+        the authentic version.  Of course, this module also supports pass-the-hash,
+        which the authentic PsExec does not.  You must provide a local path to the
+        authentic PsExec.exe (via the PSEXEC_PATH option) so that the PSEXESVC.EXE
+        service code can be extracted and uploaded to the target.  The specified
+        command (via the COMMAND option) will be executed with SYSTEM privileges.
+      },
+      'Author'         => [
+        'Joe Testa <jtesta[at]positronsecurity.com>'
+      ],
+      'License'        => MSF_LICENSE,
+      'References'     => [
+        [ 'URL', 'http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx' ]
+      ],
+      'Platform'       => 'win',
+   ))
 
-    register_options([
-                      OptString.new('PSEXEC_PATH', [ true, "The local path to the authentic PsExec.exe", '' ]),
-                      OptString.new('COMMAND', [ true, "The program to execute with SYSTEM privileges.", 'cmd.exe' ])
-                     ], self.class )
+  register_options([
+    OptString.new('PSEXEC_PATH', [ true, "The local path to the authentic PsExec.exe", '' ]),
+    OptString.new('COMMAND', [ true, "The program to execute with SYSTEM privileges.", 'cmd.exe' ])
+    ], self.class )
   end
 
   def run
