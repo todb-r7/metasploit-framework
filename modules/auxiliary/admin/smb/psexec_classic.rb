@@ -99,7 +99,6 @@ class Metasploit3 < Msf::Auxiliary
     dcerpc_bind(handle)
     print_status("Successfully bound to #{handle} ...")
 
-
     begin
       # Get a handle to the service control manager.
       print_status('Obtaining a service control manager handle...')
@@ -165,13 +164,13 @@ class Metasploit3 < Msf::Auxiliary
     psexecsvc_proc = simple.create_pipe("\\#{psexesvc_pipe_name}")
     smbclient = simple.client
 
-    cipherEncrypt = nil
-    cipherDecrypt = nil
-    encryptedStream = false
+    cipher_encrypt = nil
+    cipher_decrypt = nil
+    encrypted_stream = false
     aes_key = nil
     # Newer versions of PsExec need to set up (unauthenticated) encryption.
     if psexec_version == 2.1 or psexec_version == 2.11
-      encryptedStream = true
+      encrypted_stream = true
 
       magic = simple.trans_pipe(psexecsvc_proc.file_id, NDR.long(0xC8) + NDR.long(0x0A280105) + NDR.long(0x01))
 
@@ -198,15 +197,15 @@ class Metasploit3 < Msf::Auxiliary
 
       # Create Cipher objects for encryption and decryption.  Generate a
       # random 256-bit session key.
-      cipherEncrypt = OpenSSL::Cipher::AES.new(256, :CBC)
-      cipherEncrypt.encrypt
-      aes_key = cipherEncrypt.random_key
-      cipherEncrypt.iv = "\x00" * 16
+      cipher_encrypt = OpenSSL::Cipher::AES.new(256, :CBC)
+      cipher_encrypt.encrypt
+      aes_key = cipher_encrypt.random_key
+      cipher_encrypt.iv = "\x00" * 16
 
-      cipherDecrypt = OpenSSL::Cipher::AES.new(256, :CBC)
-      cipherDecrypt.decrypt
-      cipherDecrypt.key = aes_key
-      cipherDecrypt.iv = "\x00" * 16
+      cipher_decrypt = OpenSSL::Cipher::AES.new(256, :CBC)
+      cipher_decrypt.decrypt
+      cipher_decrypt.key = aes_key
+      cipher_decrypt.iv = "\x00" * 16
 
       # Encrypt the symmetric key with the RSA key.
       encrypted_key = rsa_encrypt(rsa_public_key, aes_key)
@@ -215,8 +214,8 @@ class Metasploit3 < Msf::Auxiliary
       smbclient.write(psexecsvc_proc.file_id, 0, "\x8c\x00\x00\x00")
 
       # This is the PUBLICKEYSTRUC header that preceeds the encrypted key.
-      publickeystruc = "\x01" +     # bType = SIMPLEBLOB
-                       "\x02" +     # bVersion
+      publickeystruc = "\x01" +     # b_type = SIMPLEBLOB
+                       "\x02" +     # b_version
                        "\x00\x00" + # reserved
                        "\x10\x66\x00\x00" + # ALG_ID = 0x6610 =
                                             # ALG_CLASS_DATA_ENCRYPT|
@@ -249,25 +248,25 @@ class Metasploit3 < Msf::Auxiliary
       random_client_pid_high.chr << "\x00\x00" <<
       Rex::Text.to_unicode(random_hostname) <<
       ("\x00" * 496) << Rex::Text.to_unicode(command) <<
-      ("\x00" * (3762 - (command.length * 2))), cipherEncrypt)
+      ("\x00" * (3762 - (command.length * 2))), cipher_encrypt)
 
     # In the next three messages, we just send lots of zero bytes...
-    data2 = aes("\x00" * 4290, cipherEncrypt)
-    data3 = aes("\x00" * 4290, cipherEncrypt)
-    data4 = aes("\x00" * 4290, cipherEncrypt)
+    data2 = aes("\x00" * 4290, cipher_encrypt)
+    data3 = aes("\x00" * 4290, cipher_encrypt)
+    data4 = aes("\x00" * 4290, cipher_encrypt)
 
     # In the final message, we give it some magic bytes.  This
     # (somehow) corresponds to the "-s" flag in PsExec.exe, which
     # tells it to execute the specified command as SYSTEM.
     data5 = aes(("\x00" * 793) << "\x01" <<
         ("\x00" * 14) << "\xff\xff\xff\xff" <<
-        ("\x00" * 1048) << "\x01" << ("\x00" * 11), cipherEncrypt)
+        ("\x00" * 1048) << "\x01" << ("\x00" * 11), cipher_encrypt)
 
     # If the stream is encrypted, we must first send the length of the
     # entire ciphertext.
     data_len_packed = "\x58\x4a"
     remaining = 19032
-    if encryptedStream then
+    if encrypted_stream then
       ciphertext_length = data1.length + data2.length + data3.length + data4.length + data5.length
       remaining = ciphertext_length
 
@@ -385,12 +384,12 @@ class Metasploit3 < Msf::Auxiliary
     # Read 1024 bytes at a time if the stream is not encrypted.  Otherwise,
     # we need to read the length packet first (which is always a 4-byte
     # DWORD), followed by a second packet with the data.
-    readLenStdout = readLenStderr = 1024
-    if encryptedStream then
-      readLenStdout = readLenStderr = 4
+    read_len_stdout = read_len_stderr = 1024
+    if encrypted_stream then
+      read_len_stdout = read_len_stderr = 4
 
       # Each message is not chained to any previous one.
-      cipherEncrypt.reset
+      cipher_encrypt.reset
     end
 
     # Read from stdout and stderr.  We need to record the multiplex
@@ -400,10 +399,10 @@ class Metasploit3 < Msf::Auxiliary
     # returned from the last call.  Hence, we use these IDs to know
     # when to call read again.
     stdout_multiplex_id = smbclient.multiplex_id
-    smbclient.read(psexecsvc_proc_stdout.file_id, 0, readLenStdout, false)
+    smbclient.read(psexecsvc_proc_stdout.file_id, 0, read_len_stdout, false)
 
     stderr_multiplex_id = smbclient.multiplex_id
-    smbclient.read(psexecsvc_proc_stderr.file_id, 0, readLenStderr, false)
+    smbclient.read(psexecsvc_proc_stderr.file_id, 0, read_len_stderr, false)
 
     # Loop to read responses from the server and process commands
     # from the user.
@@ -461,25 +460,25 @@ class Metasploit3 < Msf::Auxiliary
             # this happens when our previous read to stderr unexpectedly
             # returns with data.
             payload = parsed_smbpacket['Payload'].v['Payload'][1..-1]
-            if encryptedStream
+            if encrypted_stream
               # If we previously requested to read 4 bytes from a stream, parse the response, then we can issue
               # a second read request with the size of the data that's waiting for us.
-              if stdout_response and (readLenStdout == 4)
-                readLenStdout = payload.unpack('V')[0]
-              elsif stderr_response && (readLenStderr == 4)
-                readLenStderr = payload.unpack('V')[0]
+              if stdout_response and (read_len_stdout == 4)
+                read_len_stdout = payload.unpack('V')[0]
+              elsif stderr_response && (read_len_stderr == 4)
+                read_len_stderr = payload.unpack('V')[0]
               else
                 # Decrypt the payload and print it.
-                print aes(payload, cipherDecrypt)
+                print aes(payload, cipher_decrypt)
 
                 # Each block read from the server is encrypted separately from
                 # all previous blocks.  Hence, the ciphertexts aren't chained
                 # together.
-                cipherDecrypt.reset
+                cipher_decrypt.reset
 
                 # Issue a read command of length 4 to get the size of the next
                 # ciphertext.
-                stdout_response ? readLenStdout = 4 : readLenStderr = 4
+                stdout_response ? read_len_stdout = 4 : read_len_stderr = 4
               end
             # Older versions of PsExec don't encrypt anything...
             else
@@ -489,10 +488,10 @@ class Metasploit3 < Msf::Auxiliary
             # Issue another read request on whatever pipe just returned data.
             if stdout_response
               stdout_multiplex_id = smbclient.multiplex_id
-              smbclient.read(psexecsvc_proc_stdout.file_id, 0, readLenStdout, false)
+              smbclient.read(psexecsvc_proc_stdout.file_id, 0, read_len_stdout, false)
             elsif stderr_response
               stderr_multiplex_id = smbclient.multiplex_id
-              smbclient.read(psexecsvc_proc_stderr.file_id, 0, readLenStderr, false)
+              smbclient.read(psexecsvc_proc_stderr.file_id, 0, read_len_stderr, false)
             end
           end
         end
@@ -512,9 +511,9 @@ class Metasploit3 < Msf::Auxiliary
             # If the stream is encrypted, we need to send the length of the
             # encrypted message first, separately.
             cr = "\x0d"
-            if encryptedStream then
-              cr = aes(cr, cipherEncrypt)
-              cipherEncrypt.reset
+            if encrypted_stream then
+              cr = aes(cr, cipher_encrypt)
+              cipher_encrypt.reset
               smbclient.write(psexecsvc_proc_stdin.file_id, 0, [cr.length].pack('V'))
             end
 
@@ -541,9 +540,9 @@ class Metasploit3 < Msf::Auxiliary
           # If the stream is encrypted, encrypt the data, then send a separate message
           # telling the server what the length of the next ciphertext is.
           original_data = data
-          if encryptedStream then
-            data = aes(data, cipherEncrypt)
-            cipherEncrypt.reset
+          if encrypted_stream then
+            data = aes(data, cipher_encrypt)
+            cipher_encrypt.reset
             smbclient.write(psexecsvc_proc_stdin.file_id, 0, [data.length].pack('V'))
           end
 
@@ -686,18 +685,18 @@ class Metasploit3 < Msf::Auxiliary
     blob = blob[1..-1]
 
     # PUBLICKEYSTRUC
-    bType = blob[0, 1].ord
-    bVersion = blob[1, 1].ord
+    b_type = blob[0, 1].ord
+    b_version = blob[1, 1].ord
     reserved = blob[2, 2]
-    aiKeyAlg = blob[4, 4].unpack("L")[0]
+    ai_key_alg = blob[4, 4].unpack("L")[0]
 
     # RSAPUBKEY
     magic = blob[8, 4]
     bitlen = blob[12, 4].unpack("L")[0].to_i
-    pubexpBE = blob[16, 4].unpack('N*').pack('V*')
-    pubexpLE = blob[16, 4].unpack("L")[0]
-    modulusLE = blob[20, blob.length - 20]
-    modulusBE = modulusLE.reverse
+    pubexp_be = blob[16, 4].unpack('N*').pack('V*')
+    pubexp_le = blob[16, 4].unpack("L")[0]
+    modulus_le = blob[20, blob.length - 20]
+    modulus_be = modulus_le.reverse
 
     # This magic value is "RSA1".
     if magic != "\x52\x53\x41\x31" then
@@ -710,12 +709,12 @@ class Metasploit3 < Msf::Auxiliary
       return nil
     end
 
-    if pubexpLE.to_i != 65537 then
-      print_error "Public exponent is not 65537 as expected!: " << pubexpLE.to_i.to_s
+    if pubexp_le.to_i != 65537 then
+      print_error "Public exponent is not 65537 as expected!: " << pubexp_le.to_i.to_s
       return nil
     end
 
-    return OpenSSL::PKey::RSA.new(make_der_stream(modulusBE, pubexpBE))
+    return OpenSSL::PKey::RSA.new(make_der_stream(modulus_be, pubexp_be))
   end
 
   # The Ruby OpenSSLs ASN.1 documentation is terrible, so I had to construct
@@ -723,34 +722,34 @@ class Metasploit3 < Msf::Auxiliary
   # with the ASN.1 support, please do!
   #
   # The ASN.1 encoder at http://lapo.it/asn1js/ was a big help here.
-  def make_der_stream(modulusBE, pubexpBE)
+  def make_der_stream(modulus_be, pubexp_be)
 
-    modulusLen = modulusBE.length + 1 # + 1 for the extra \x00
-    modulusLenByte = [modulusLen].pack('C')
-    modulusInteger = "\x02\x81" << modulusLenByte << "\x00" << modulusBE
+    modulus_len = modulus_be.length + 1 # + 1 for the extra \x00
+    modulous_len_byte = [modulus_len].pack('C')
+    modulous_integer = "\x02\x81" << modulous_len_byte << "\x00" << modulus_be
 
-    pubexpLen = pubexpBE.length
-    pubexpLenByte = [pubexpLen].pack('C')
-    pubexpInteger = "\x02" << pubexpLenByte << pubexpBE
+    pubexp_len = pubexp_be.length
+    pubexp_len_byte = [pubexp_len].pack('C')
+    pubexp_integer = "\x02" << pubexp_len_byte << pubexp_be
 
-    modulusExpSequenceLen = modulusLen + 3 + pubexpLen + 2
-    modulusExpSequenceLenByte = [modulusExpSequenceLen].pack('C')
-    modulusExpSequence = "\x30\x81" << modulusExpSequenceLenByte << modulusInteger << pubexpInteger
+    modulus_exp_sequence_len = modulus_len + 3 + pubex_len + 2
+    modulus_exp_sequence_len_byte = [modulus_exp_sequence_len].pack('C')
+    modulus_exp_sequence = "\x30\x81" << modulus_exp_sequence_len_byte << modulous_integer << pubexp_integer
 
-    bitStringLen = modulusExpSequenceLen + 3 + 1 # + 1 for the extra \x00
-    bitStringLenByte = [bitStringLen].pack('C')
-    bitString = "\x03\x81" << bitStringLenByte << "\x00" << modulusExpSequence
+    bit_string_len = modulus_exp_sequence_len + 3 + 1 # + 1 for the extra \x00
+    bit_string_len_byte = [bit_string_len].pack('C')
+    bit_string = "\x03\x81" << bit_string_len_byte << "\x00" << modulus_exp_sequence
 
     oid = "\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x01"
     null = "\x05\x00"
-    oidNullSequence = "\x30\x0d" << oid << null
-    oidNullSequenceLen = oidNullSequence.length
+    oid_null_sequence = "\x30\x0d" << oid << null
+    oid_null_sequence_len = oid_null_sequence.length
 
-    parentSequenceLen = oidNullSequenceLen + bitStringLen + 3
-    parentSequenceLenByte = [parentSequenceLen].pack('C')
-    parentSequence = "\x30\x81" << parentSequenceLenByte << oidNullSequence << bitString
+    parent_sequence_len = oid_null_sequence_len + bit_string_len + 3
+    parent_sequence_len_byte = [parent_sequence_len].pack('C')
+    parent_sequence = "\x30\x81" << parent_sequence_len_byte << oid_null_sequence << bit_string
 
-    return parentSequence
+    return parent_sequence
   end
 
   # This is the I2OSP function, as defined in RSA PKCS#1 v2.1.  It takes a
