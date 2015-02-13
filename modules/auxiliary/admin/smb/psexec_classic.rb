@@ -732,7 +732,7 @@ class Metasploit3 < Msf::Auxiliary
     pubexp_len_byte = [pubexp_len].pack('C')
     pubexp_integer = "\x02" << pubexp_len_byte << pubexp_be
 
-    modulus_exp_sequence_len = modulus_len + 3 + pubex_len + 2
+    modulus_exp_sequence_len = modulus_len + 3 + pubexp_len + 2
     modulus_exp_sequence_len_byte = [modulus_exp_sequence_len].pack('C')
     modulus_exp_sequence = "\x30\x81" << modulus_exp_sequence_len_byte << modulous_integer << pubexp_integer
 
