@@ -44,7 +44,7 @@ class Metasploit3 < Msf::Auxiliary
    ))
 
   register_options([
-    OptString.new('PSEXEC_PATH', [ true, "The local path to the authentic PsExec.exe", '' ]),
+    OptPath.new('PSEXEC_PATH', [ true, "The local path to the authentic PsExec.exe", '' ]),
     OptString.new('COMMAND', [ true, "The program to execute with SYSTEM privileges.", 'cmd.exe' ])
     ], self.class )
   end
