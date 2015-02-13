@@ -1,5 +1,5 @@
 ##
-# This module requires Metasploit: http//metasploit.com/download
+# This module requires Metasploit: http://metasploit.com/download
 # Current source: https://github.com/rapid7/metasploit-framework
 ##
 
@@ -717,7 +717,7 @@ command (via the COMMAND option) will be executed with SYSTEM privileges.
       return nil
     end
 
-    return OpenSSL::PKey::RSA.new(make_DER_stream(modulusBE, pubexpBE))
+    return OpenSSL::PKey::RSA.new(make_der_stream(modulusBE, pubexpBE))
   end
 
   # The Ruby OpenSSLs ASN.1 documentation is terrible, so I had to construct
@@ -725,7 +725,7 @@ command (via the COMMAND option) will be executed with SYSTEM privileges.
   # with the ASN.1 support, please do!
   #
   # The ASN.1 encoder at http://lapo.it/asn1js/ was a big help here.
-  def make_DER_stream(modulusBE, pubexpBE)
+  def make_der_stream(modulusBE, pubexpBE)
 
     modulusLen = modulusBE.length + 1 # + 1 for the extra \x00
     modulusLenByte = [modulusLen].pack('C')
@@ -757,7 +757,7 @@ command (via the COMMAND option) will be executed with SYSTEM privileges.
 
   # This is the I2OSP function, as defined in RSA PKCS#1 v2.1.  It takes a
   # number and encodes it into a byte string.
-  def I2OSP(n, len)
+  def i2osp(n, len)
     # Technically, we need to check that x isn't too large, but for this usage,
     # we're fine.
 
@@ -783,7 +783,7 @@ command (via the COMMAND option) will be executed with SYSTEM privileges.
 
   # This is the OS2IP function, as defined in RSA PKCS#1 v2.1.  It takes a
   # string and returns its number representation.
-  def OS2IP(astring)
+  def os2ip(astring)
     ret = 0
     astring.each_byte do |b|
       ret = ret << 8
@@ -817,9 +817,9 @@ command (via the COMMAND option) will be executed with SYSTEM privileges.
     end
 
     eb = "\x00\x02" << ps << "\x00" << message
-    m = OS2IP(eb)
+    m = os2ip(eb)
     c = m.to_bn.mod_exp(key.e, key.n).to_bn
-    em = I2OSP(c, 128)
+    em = i2osp(c, 128)
     em.reverse
   end
 
