@@ -129,8 +129,15 @@ protected
     # Check to see if the shell exists
     sock.put("\necho #{ebuf}\n")
 
-    # Try to read a response
-    rbuf = sock.get_once
+    # Try to read a response. Usually get_once works, but
+    # sometimes shells throw responses split across packets,
+    # slowly.
+    if datastore['FindHandlerTimeout']
+      timeout = datastore['FindHandlerTimeout'].to_i.abs
+      rbuf = sock.get(timeout)
+    else
+      rbuf = sock.get_once
+    end
 
     # If it contains our string, then we rock
     if (rbuf =~ /#{ebuf}/)
