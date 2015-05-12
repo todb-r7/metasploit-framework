@@ -69,9 +69,9 @@ changed_files.each_line do |fname|
 end
 
 if files_to_check.empty?
-  puts "--- No Metasploit modules to check ---"
+  puts "[*] No Metasploit modules to check"
 else
-  puts "--- Checking new and changed module syntax with tools/msftidy.rb ---"
+  puts "[*] Checking new and changed module syntax with tools/msftidy.rb"
   files_to_check.each do |fname|
     cmd = "ruby ./tools/msftidy.rb  #{fname}"
     msftidy_output= %x[ #{cmd} ]
