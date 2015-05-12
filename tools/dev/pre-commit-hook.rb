@@ -97,7 +97,7 @@ unless valid
 end
 
 if base_caller == :post_merge
-  unless signature_check.includes? "gpg: Good signature from"
+  unless signature_check.include? "gpg: Good signature from"
     puts signed_error_message
     exit(0x11)
   end
