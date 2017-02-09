@@ -128,14 +128,14 @@ class Console::CommandDispatcher::RFtransceiver
       return
     end
     arg["mhz"] = mhz if mhz
-    r = client.rftransceiver.setFreq(idx, freq, arg)
+    r = client.rftransceiver.set_freq(idx, freq, arg)
     print_success(r)
   end
 
   def cmd_modulation_help
     print_line("Usage: modulation -M <Modulation name>\n")
     print_line("Modulation names:\n")
-    print_line("  #{client.rftransceiver.getSupportedModulations(idx)}")
+    print_line("  #{client.rftransceiver.get_supported_modulations(idx)}")
     print_line("\nExample: modulation -M ASK/OOK")
   end
 
@@ -144,7 +144,7 @@ class Console::CommandDispatcher::RFtransceiver
   #
   def cmd_modulation(*args)
     self.idx ||= 0
-    mod = nil 
+    mod = nil
     opts = Rex::Parser::Arguments.new(
       '-h' => [ false, 'Help Banner' ],
       '-M' => [ true, 'Modulation name, See help for options']
@@ -163,7 +163,7 @@ class Console::CommandDispatcher::RFtransceiver
       cmd_modulation_help
       return
     end
-    r = client.rftransceiver.setModulation(idx, mod)
+    r = client.rftransceiver.set_modulation(idx, mod)
     print_success(r)
   end
 
@@ -172,7 +172,7 @@ class Console::CommandDispatcher::RFtransceiver
   #
   def cmd_flen(*args)
     self.idx ||= 0
-    flen = -1 
+    flen = -1
     opts = Rex::Parser::Arguments.new(
       '-h' => [ false, 'Help Banner' ],
       '-l' => [ true, 'Fixed Length']
@@ -191,7 +191,7 @@ class Console::CommandDispatcher::RFtransceiver
       print_line("You must specify a length")
       return
     end
-    r = client.rftransceiver.makePktFlen(idx, flen)
+    r = client.rftransceiver.make_pkt_flen(idx, flen)
     print_success(r)
   end
 
@@ -219,7 +219,7 @@ class Console::CommandDispatcher::RFtransceiver
       print_line("You must specify a length")
       return
     end
-    r = client.rftransceiver.makePktVlen(idx, vlen)
+    r = client.rftransceiver.make_pkt_vlen(idx, vlen)
     print_success(r)
   end
 

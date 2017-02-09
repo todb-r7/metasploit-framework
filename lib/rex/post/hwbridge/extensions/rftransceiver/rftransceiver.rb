@@ -38,7 +38,7 @@ class RFTransceiver < Extension
   # @param idx [Integer] HW Index
   # @param opt [Hash] Optional: "mhz" => 24
   # @param freq [Integer] Frequency to set
-  def setFreq(idx, freq, opt={})
+  def set_freq(idx, freq, opt={})
     request = "/rftransceiver/#{idx}/set_freq?freq=#{freq}"
     request += "&mhz=#{opt["mhz"]}" if opt.has_key? "mhz"
     client.send_request(request)
@@ -47,7 +47,7 @@ class RFTransceiver < Extension
   # Retrieves a list of supported Modulations
   # @param idx [Integer] HW Index
   # @return [Array] of Modulation strings
-  def getSupportedModulations(idx)
+  def get_supported_modulations(idx)
     client.send_request("/rftransceiver/#{idx}/get_modulations")
   end
 
@@ -61,21 +61,21 @@ class RFTransceiver < Extension
   # Sets the modulation value
   # @param idx [Integer] HW Index
   # @param mod [String] Modulation Technique
-  def setModulation(idx, mod)
+  def set_modulation(idx, mod)
     client.send_request("/rftransceiver/#{idx}/set_modulation?mod=#{mod}")
   end
 
   # Sets fixed packet len
   # @param idx [Integer] HW Index
   # @param len [Integer] Length to set
-  def makePktFlen(idx, len)
+  def make_pkt_flen(idx, len)
     client.send_request("/rftransceiver/#{idx}/make_packet_flen?len=#{len}")
   end
 
   # Sets variable packet len
   # @param idx [Integer] HW Index
   # @param len [Integer] Length to set
-  def makePktVlen(idx, len)
+  def make_pkt_vlen(idx, len)
     client.send_request("/rftransceiver/#{idx}/make_packet_vlen?len=#{len}")
   end
 
@@ -112,7 +112,7 @@ class RFTransceiver < Extension
     data = client.send_request(request)
     # Note the data is initially base64 encoded
     if data.size() > 0
-	data["data"] = Base64.decode64(data["data"]) if data.has_key? "data"
+      data["data"] = Base64.decode64(data["data"]) if data.has_key? "data"
     end
     data
   end

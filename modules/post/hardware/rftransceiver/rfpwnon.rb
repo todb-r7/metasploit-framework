@@ -22,7 +22,7 @@ class MetasploitModule < Msf::Post
       OptString.new('TPAD', [false, "Specify your own binary padding after the brute forced binary", nil]),
       OptBool.new('RAW', [false, "When set, disables PWM encoding. BINLENGTH must be -1", false]),
       OptBool.new('TRI', [false, "When set, brute foces a trinary signal.", false]),
-      OptBool.new('VERBOSE', [false, "More verbose", false]),
+      OptBool.new('EXTRAVERBOSE', [false, "More verbose", false]),
       OptInt.new('INDEX', [false, "USB Index to use", 0]),
       OptInt.new('DELAY', [false, "Delay in milliseconds between transmissions", 500])
     ], self.class)
@@ -33,7 +33,7 @@ class MetasploitModule < Msf::Post
 
   # @param key [String] binary/trinary represntation
   # @return [Array] ByteArray
-  def convertOOK(key)
+  def convert_ook(key)
     pwm_str_key = ""
     key.each_char do |k|
       x = "*"
@@ -102,7 +102,7 @@ class MetasploitModule < Msf::Post
     print_status("Brute forcing frequency: #{datastore['FREQ']}")
     print_status("Padding before binary: #{datastore['PPAD']}") if datastore["PPAD"]
     print_status("Padding after binary: #{datastore["TPAD"]}") if datastore["TPAD"]
-    print_status("De Bruijin Sequence: #{brutepacket}") if datastore["VERBOSE"]
+    print_status("De Bruijin Sequence: #{brutepacket}") if datastore["EXTRAVERBOSE"]
 
     startn = 0
     endy = 512
@@ -127,11 +127,11 @@ class MetasploitModule < Msf::Post
         if datastore["RAW"]
           key_packed = brutepackettemp.scan(/.{1,8}/).collect{|x| x.to_i(2).chr}
         else
-          key_packed = convertOOK(brutepackettemp)
+          key_packed = convert_ook(brutepackettemp)
         end
         print_status("Transmitting...")
         set_flen(key_packed.length)
-	rfxmit(key_packed.join)
+        rfxmit(key_packed.join)
         print_status("Binary before PWM encoding:")
         print_status("#{brutepackettemp}")
         print_status("Binary after PWM encoding:")

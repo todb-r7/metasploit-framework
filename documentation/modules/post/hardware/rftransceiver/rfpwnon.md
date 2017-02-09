@@ -37,7 +37,7 @@ demonstrated to work against static key garage door openers.
 
   Use trinary signals. Default False
 
-  **VERBOSE**
+  **EXTRAVERBOSE**
 
   Adds some extra status messages
 

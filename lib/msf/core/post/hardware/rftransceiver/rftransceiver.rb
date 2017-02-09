@@ -54,7 +54,7 @@ module RFTransceiver
     self.index ||= 0
     opts = {}
     opts["mhz"] = mhz if not mhz == -1
-    r = client.rftransceiver.setFreq(self.index, freq, opts)
+    r = client.rftransceiver.set_freq(self.index, freq, opts)
     return_success(r)
   end
 
@@ -75,7 +75,7 @@ module RFTransceiver
   def get_modulations
     return [] if not is_rf?
     self.index ||= 0
-    return client.rftransceiver.getSupportedModulations(self.index)
+    return client.rftransceiver.get_supported_modulations(self.index)
   end
 
   #
@@ -85,7 +85,7 @@ module RFTransceiver
   def set_modulation(mod)
     return false if not is_rf?
     self.index ||= 0
-    r = client.rftransceiver.setModulation(self.index, mod)
+    r = client.rftransceiver.set_modulation(self.index, mod)
     return_success(r)
   end
 
@@ -96,7 +96,7 @@ module RFTransceiver
   def set_flen(len)
     return false if not is_rf?
     self.index ||= 0
-    r = client.rftransceiver.makePktFlen(self.index, len)
+    r = client.rftransceiver.make_pkt_flen(self.index, len)
     return_success(r)
   end
 
@@ -107,7 +107,7 @@ module RFTransceiver
   def set_vlen(len)
     return false if not is_rf?
     self.index ||= 0
-    r = client.rftransceiver.makePktVlen(self.index, len)
+    r = client.rftransceiver.make_pkt_vlen(self.index, len)
     return_success(r)
   end
 
