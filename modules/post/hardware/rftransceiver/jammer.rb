@@ -4,11 +4,20 @@ class MetasploitModule < Msf::Post
 
   def initialize(info={})
     super( update_info( info,
-        'Name'          => 'Generic RF Transceiver Jammer',
-        'Description'   => %q{ Post Module for HWBridge RFTranscievers.  Blasts a desired packet
-                               Over and over again.  Effectively jamming communications.
-                               Code ported from AndrewMohak
-                               https://github.com/AndrewMohawk/RfCatHelpers/blob/master/RFJammer.py },
+        'Name'          => 'RF Transceiver Transmitter',
+        'Description'   => %q{
+            This module powers an HWBridge-connected radio transceiver,
+            effectively transmitting on the frequency set by the FREQ option.
+
+            NOTE: Users of this module should be aware of their local laws,
+            regulations, and licensing requirements for transmitting on any
+            given radio frequency.
+
+        },
+      'References'     =>
+        [
+          ['URL', 'https://github.com/AndrewMohawk/RfCatHelpers']
+        ],
         'License'       => MSF_LICENSE,
         'Author'        => ['Craig Smith'],
         'Platform'      => ['hardware'],
