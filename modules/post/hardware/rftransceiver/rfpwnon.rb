@@ -14,7 +14,7 @@ class MetasploitModule < Msf::Post
         'SessionTypes'  => ['hwbridge']
       ))
     register_options([
-      OptInt.new('FREQ', [false, "Frequency to jam", 915000000]),
+      OptInt.new('FREQ', [true, "Frequency to transmit on"]),
       OptInt.new('BAUD', [false, "Baud rate to use", 2000]),
       OptInt.new('BINLENGTH', [false, "Binary Length of signal to brute force", 8]),
       OptInt.new('REPEAT', [false, "Number of times to repeat the signal", 5]),

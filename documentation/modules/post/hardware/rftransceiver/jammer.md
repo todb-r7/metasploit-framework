@@ -1,12 +1,16 @@
-Simple module to jame a given frequency for a specified amount of seconds. This
-code was ported from [AndrewMohowk](https://github.com/AndrewMohawk/RfCatHelpers/blob/master/RFJammer.py).
-Note: Jamming tends to violate FCC rules and most likely other rules in your area.
+Simple module to transmit a given frequency for a specified amount of seconds. This
+code was ported from [AndrewMohowk](https://github.com/AndrewMohawk).
+
+NOTE: Users of this module should be aware of their local laws,
+regulations, and licensing requirements for transmitting on any
+given radio frequency.
+
 
 ## Options ##
 
   **FREQ**
 
-  Frequency to brute force.  Default: 433880000
+  Frequency to brute force.
 
   **BAUD**
 
@@ -18,7 +22,7 @@ Note: Jamming tends to violate FCC rules and most likely other rules in your are
 
   **SECONDS**
 
-  How many seconds to jam the signal. Default: 15
+  How many seconds to jam the signal. Default: 4
 
   **INDEX**
 
@@ -26,11 +30,11 @@ Note: Jamming tends to violate FCC rules and most likely other rules in your are
 
 ## Scenarios
 
-  Jam a given signal for 15 seconds
+  Transmit a given signal for 4 seconds
 
 ```
-hwbridge > run post/hardware/rftransceiver/jammer 
+hwbridge > run post/hardware/rftransceiver/transmitter FREQ=433880000
 
-[*] Jamming 433880000 for 15 seconds...
-[*] Finished jamming
+[*] Transmitting on 433880000 for 15 seconds...
+[*] Finished transmitting
 ```

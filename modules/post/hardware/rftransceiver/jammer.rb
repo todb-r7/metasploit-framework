@@ -24,8 +24,8 @@ class MetasploitModule < Msf::Post
         'SessionTypes'  => ['hwbridge']
       ))
     register_options([
-      OptInt.new('FREQ', [true, "Frequency to jam", 433880000]),
-      OptInt.new('SECONDS', [false, "Seconds to jam", 15]),
+      OptInt.new('FREQ', [true, "Frequency to transmit on"]),
+      OptInt.new('SECONDS', [false, "Seconds to jam", 4]),
       OptInt.new('BAUD', [false, "Baud rate to use", 4800]),
       OptInt.new('POWER', [false, "Power level", 100]),
       OptInt.new('INDEX', [false, "USB Index to use", 0])
@@ -50,10 +50,10 @@ class MetasploitModule < Msf::Post
     set_mode("idle")
     set_power(datastore["POWER"])
 
-    print_status("Jamming #{datastore['FREQ']} for #{datastore['SECONDS']} seconds...")
+    print_status("Transmitting on #{datastore['FREQ']} for #{datastore['SECONDS']} seconds...")
     set_mode("tx")
     sleep(datastore['SECONDS'])
-    print_status("Finished jamming")
+    print_status("Finished transmitting")
     set_mode("idle")
   end
 

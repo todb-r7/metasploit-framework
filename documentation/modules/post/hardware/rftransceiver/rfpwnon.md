@@ -7,7 +7,7 @@ demonstrated to work against static key garage door openers.
 
   **FREQ**
 
-  Frequency to brute force.  Default: 915000000
+  Frequency to brute force.  
 
   **BAUD**
 
@@ -54,7 +54,7 @@ demonstrated to work against static key garage door openers.
   Run a brute force of 6 characters long with 2 repeats:
 
 ```
-hwbridge > run post/hardware/rftransceiver/rfpwnon BINLEGTH=6 REPEAT=2
+hwbridge > run post/hardware/rftransceiver/rfpwnon FREQ=915000000 BINLEGTH=6 REPEAT=2
 
 [*] Generating de bruijn sequence...
 [*] Brute forcing frequency: 915000000
